@@ -1,0 +1,27 @@
+{
+  "name": "wtc-staff-views",
+  "version": "1.0.0",
+  "description": "A tool that fetches data from the wtc-internal-server and presents it in html/css format to the staff",
+  "main": "index.js",
+  "scripts": {
+    "test": "\"jest\"",
+    "start": "npm install && node app.js"
+  },
+  "author": "wtc",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "chart.js": "^2.8.0",
+    "dotenv": "^6.2.0",
+    "ejs": "^2.6.1",
+    "express": "^4.16.4",
+    "http": "0.0.0",
+    "isomorphic-fetch": "^2.2.1",
+    "mongoose": "^5.4.14",
+    "pg-promise": "^8.6.0",
+    "pivottable": "^2.23.0"
+  },
+  "devDependencies": {
+    "nodemon": "^1.18.10"
+  }
+}

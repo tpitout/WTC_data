@@ -1,0 +1,849 @@
+<link rel="stylesheet" type="text/css" href="style.css" />
+<script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+
+<div style="height:100vh;display:flex;">
+    <div class="main-bar">
+        <img width="80%" src="wtc_logo_w.png" /><br /><br />
+        <button id="createStat" onclick="openModal('createInput', 'createStat', 'createClose');" class="button1">Generate Graph</button><br />
+        <button onclick="openModal('passFailInput');" class="button1">Pass/Fail Stats</button><br />
+        <button onclick="GetProjectsChart5();" class="button1">Status</button><br />
+        <button class="button1" onclick="clean();">Clear</button><br />
+    </div>
+
+    <div id="createInput" class="modal">
+        <div class="modal-content">
+            <span onclick="closeModal('createInput');" class="close">cancel</span>
+            <h2 style="color:white;font-sixze:2em;">Enter Data To Generate A Graph</h2>
+            <button id="chooseGraph1" onclick="setModalSingle();">Single Stat</button>
+            <button id="chooseGraph2" onclick="setModalCompare();">Compare Stat</button>
+
+            <script>
+                function setModalSingle() {
+                    document.getElementById("inputField_1").style.display = "block";
+                    document.getElementById("inputField_2").style.display = "none";
+                    document.getElementById("chooseGraph1").style.border = "2px solid blue";
+                    document.getElementById("chooseGraph2").style.border = "none";
+                }
+
+                function setModalCompare() {
+                    document.getElementById("inputField_2").style.display = "block";
+                    document.getElementById("inputField_1").style.display = "none";
+                    document.getElementById("chooseGraph2").style.border = "2px solid blue";
+                    document.getElementById("chooseGraph1").style.border = "none";
+                }
+            </script>
+            <div style="display:none;text-align:center;" id="inputField_1">
+                <label>Cohort</label><br />
+                <select id="InCohort">
+                  <option value="2017">2017</option>
+                  <option value="2018">2018</option>
+                  <option value="">None</option>
+                </select><br /><br />
+
+                <label>Campus</label><br />
+                <select id="InCampus">
+                  <option value="johannesburg">Johannesburg</option>
+                  <option value="capetown">Cape-Town</option>
+                  <option value="">Both</option>
+                </select><br /><br />
+
+                <label>Project</label><br />
+                <select id="InProject">
+                  <option value="libft">Libft</option>
+                  <option value="matcha">Matcha</option>
+                  <option value="camagru">Camagru</option> 
+                  <option value="">All</option> 
+                </select><br /><br />
+
+                <label>Type of Chart</label><br />
+                <select id="InChart">
+                  <option value="doughnut">Pie</option>
+                  <option value="line">Line</option>
+                  <option value="bar">Bar</option> 
+                </select>
+                <br /><br />
+                <button class="button1" onclick="GetProjectsChart();">Generate</button><br />
+            </div>
+
+            <div style="display:none;text-align:center;" id="inputField_2" style="">
+                <label>Cohort</label><br />
+                <select id="InCohort1">
+                <option value="2017">2017</option>
+                <option value="2018">2018</option>
+                <option value="">None</option>
+              </select><br /><br />
+                <select id="InCohort2">
+                <option value="2017">2017</option>
+                <option value="2018">2018</option>
+                <option value="">None</option>
+              </select><br /><br />
+
+                <label>Campus</label><br />
+                <select id="InCampus1">
+                <option value="johannesburg">Johannesburg</option>
+                <option value="capetown">Cape-Town</option>
+                <option value="">Both</option>
+              </select><br /><br />
+                <select id="InCampus2">
+                <option value="johannesburg">Johannesburg</option>
+                <option value="capetown">Cape-Town</option>
+                <option value="">Both</option>
+              </select><br /><br />
+
+                <label>Project</label><br />
+                <select id="InProject1">
+                <option value="libft">Libft</option>
+                <option value="matcha">Matcha</option>
+                <option value="camagru">Camagru</option> 
+                <option value="">All</option> 
+              </select><br /><br />
+                <select id="InProject2">
+                <option value="libft">Libft</option>
+                <option value="matcha">Matcha</option>
+                <option value="camagru">Camagru</option> 
+                <option value="">All</option> 
+              </select><br /><br />
+
+                <label>Type of Chart</label><br />
+                <select id="InChart">
+                <option value="line">Line</option>
+                <option value="bar">Bar</option> 
+              </select>
+                <br /><br />
+                <br />
+                <button class="button1" onclick="GetProjectsChart2();">Generate</button><br />
+            </div>
+        </div>
+    </div>
+
+    <div id="passFailInput" class="modal">
+        <div class="modal-content">
+            <span onclick="closeModal('passFailInput');" class="close">cancel</span>
+            <h2 style="color:white;font-sixze:2em;">
+                Enter Data To Generate A Graph
+            </h2>
+            <p style="color:white;">Leave open if you want a wildcard</p>
+            <div style="text-align: center;">
+                <label>Cohort</label><br />
+                <input type="text" id="InCohort3" /><br />
+                <label>Campus</label><br />
+                <input type="text" id="InCampus3" /><br />
+                <label>Project</label><br />
+                <input type="text" id="InProject3" /><br />
+                <select id="InChart3">
+          <option value="doughnut">Pie</option>
+          <option value="bar">Bar</option> </select
+        ><br />
+        <button class="button1" onclick="GetProjectsChart3();">Generate</button
+        ><br />
+      </div>
+    </div>
+  </div>
+
+  <div id="compareInput" class="modal">
+    <div class="modal-content">
+      <span onclick="closeModal('compareInput');" class="close">cancel</span>
+      <h2 style="color:white;font-sixze:2em;">
+        Enter Data To Generate A Graph
+      </h2>
+      <p style="color:white;">Leave open if you want a wildcard</p>
+      <div style="text-align: center;">
+        <label>Cohort</label><br />
+        <input type="text" id="InCohort1" /><input
+          type="text"
+          id="InCohort2"
+        /><br />
+        <label>Campus</label><br />
+        <input type="text" id="InCampus1" /><input
+          type="text"
+          id="InCampus2"
+        /><br />
+        <label>Project</label><br />
+        <input type="text" id="InProject1" /><input
+          type="text"
+          id="InProject2"
+        /><br />
+        <select id="InChart2">
+          <option value="line">Line</option>
+          <option value="bar">Bar</option> </select
+        ><br />
+        <button class="button1" onclick="GetProjectsChart2();">Generate</button
+        ><br />
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function openModal(modalID) {
+      var modal = document.getElementById(modalID);
+      modal.style.display = "block";
+    }
+
+    function closeModal(modalID) {
+      var modal = document.getElementById(modalID);
+      modal.style.display = "none";
+    }
+  </script>
+  <div id="mm" class="main-main">
+    <div id="data"></div>
+    <script type="text/javascript">
+      ryansFuntion();
+
+      async function ryansFuntion() {
+        const result = await getData();
+        let data = result.data.getAllModules;
+        pivot(data);
+      }
+
+      function getData() {
+        return new Promise((resolve, reject) => {
+          var campus = document.getElementById("InCampus").value;
+          var cohort = document.getElementById("InCohort").value;
+          var project = document.getElementById("InProject").value;
+          fetch(
+            `https://wtc-internal-server-production.herokuapp.com/api/modules?cohort=${cohort}&campus=${campus}&project=${project}`,
+            {
+              method: "GET",
+              headers: {
+                "content-type": "application/json"
+              }
+            }
+          )
+            .then(response => {
+              return response.json();
+            })
+            .then(res => {
+              if (res.data.getAllModules.length === 0) {
+                reject(Error("error"));
+              } else {
+                resolve(res);
+              }
+            });
+        });
+      }
+
+    </script>
+    <canvas id="myChart" style="width:100%;"></canvas>
+  </div>
+</div>
+
+<script>
+  function clean() {
+    location.reload();
+  }
+
+  function GetUsers() {
+    var cohort = document.getElementById("InCohort").value;
+    var campus = document.getElementById("InCampus").value;
+
+    var usernames = fetch(
+      `https://serverlivetest.herokuapp.com/api/users?cohort=${cohort}&campus=${campus}`,
+      {
+        method: "GET",
+        headers: {
+          "content-type": "application/json"
+        }
+      }
+    )
+      .then(response => response.json())
+      .then(ans => fPrint(ans.data.getAllUsers));
+  }
+
+  function GetProjectsChart() {
+    document.getElementById("mm").innerHTML = '<div id="data"></div><canvas id="myChart" style="width:100%;"></canvas>';
+    var campus = document.getElementById("InCampus").value;
+    var cohort = document.getElementById("InCohort").value;
+    var project = document.getElementById("InProject").value;
+    // date = new Date (document.getElementById("InDate").value).getDate;
+    var usernames = fetch(
+      `https://wtc-internal-server-production.herokuapp.com/api/modules?module_name=${project}&campus=${campus}&cohort=${cohort}`,
+      {
+        method: "GET",
+        headers: {
+          "content-type": "application/json"
+        }
+      }
+    )
+      .then(response => response.json())
+      .then(ans => chart(ans.data.getAllModules));
+  }
+
+  function GetProjectsChart3() {
+    var campus = document.getElementById("InCampus3").value;
+    var cohort = document.getElementById("InCohort3").value;
+    var project = document.getElementById("InProject3").value;
+    // date = new Date (document.getElementById("InDate").value).getDate;
+    var usernames = fetch(
+      `https://wtc-internal-server-production.herokuapp.com/api/modules?module_name=${project}&campus=${campus}&cohort=${cohort}`,
+      {
+        method: "GET",
+        headers: {
+          "content-type": "application/json"
+        }
+      }
+    )
+      .then(response => response.json())
+      .then(ans => chart3(ans.data.getAllModules));
+  }
+
+  function GetProjectsChart5() {
+    document.getElementById("mm").innerHTML = '<div id="data"></div>';
+    var campus = "capetown";
+    var cohort = "2017";
+    // date = new Date (document.getElementById("InDate").value).getDate;
+    var usernames = fetch(
+      `https://serverlivetest.herokuapp.com/api/Applications`,
+      {
+        method: "GET",
+        headers: {
+          "content-type": "application/json"
+        }
+      }
+    )
+      .then(response => response.json())
+      .then(ans => chart5(ans.data.getAllApplications));
+  }
+
+  function chart5(data) {
+    var blackMaleCPT = 0;
+    var whiteMaleCPT = 0;
+    var colouredMaleCPT = 0;
+    var otherMaleCPT = 0;
+    var chineseMaleCPT = 0;
+    var indianMaleCPT = 0;
+    var maleCPT = 0;
+
+    var blackFemaleCPT = 0;
+    var whiteFemaleCPT = 0;
+    var colouredFemaleCPT = 0;
+    var otherFemaleCPT = 0;
+    var chineseFemaleCPT = 0;
+    var indianFemaleCPT = 0;
+    var femaleCPT = 0;
+
+    var blackMaleJHB = 0;
+    var whiteMaleJHB = 0;
+    var colouredMaleJHB = 0;
+    var otherMaleJHB = 0;
+    var chineseMaleJHB = 0;
+    var indianMaleJHB = 0;
+    var maleJHB = 0;
+
+    var blackFemaleJHB = 0;
+    var whiteFemaleJHB = 0;
+    var colouredFemaleJHB = 0;
+    var otherFemaleJHB = 0;
+    var chineseFemaleJHB = 0;
+    var indianFemaleJHB = 0;
+    var femaleJHB = 0;
+
+    for (i = 0; i < data.length; i++) {
+      
+      if ((data[i].gender == "male")&&(data[i].campus == "capetown")) {
+        maleCPT++;
+      }
+        if ((data[i].campus == "capetown") && (data[i].ethnicity == "black") && (data[i].gender == "male")) {
+          blackMaleCPT++;
+        } else if ((data[i].campus == "capetown") && (data[i].ethnicity == "white") && (data[i].gender == "male")) {
+          whiteMaleCPT++;
+        } else if ((data[i].campus == "capetown") && (data[i].ethnicity == "coloured") && (data[i].gender == "male")) {
+          colouredMaleCPT++;
+        } else if ((data[i].campus == "capetown") && (data[i].ethnicity == "chinese") && (data[i].gender == "male")) {
+          chineseMaleCPT++;
+        }  else if ((data[i].campus == "capetown") && (data[i].ethnicity == "other") && (data[i].gender == "male")) {
+          otherMaleCPT++;
+        } else if ((data[i].campus == "capetown") && (data[i].ethnicity == "indian") && (data[i].gender == "male")) {
+          indianMaleCPT++;
+        }
+    
+        if ((data[i].gender == "female") && (data[i].campus == "capetown")) {
+          femaleCPT++;
+        }
+        
+        if ((data[i].campus == "capetown") && (data[i].ethnicity == "black") && (data[i].gender == "female")) {
+          blackFemaleCPT++;
+        } else if ((data[i].campus == "capetown") && (data[i].ethnicity == "white") && (data[i].gender == "female")) {
+          whiteFemaleCPT++;
+        } else if ((data[i].campus == "capetown") && (data[i].ethnicity == "coloured") && (data[i].gender == "female")) {
+          colouredFemaleCPT++;
+        } else if ((data[i].campus == "capetown") && (data[i].ethnicity == "chinese") && (data[i].gender == "female")) {
+          chineseFemaleCPT++;
+        }  else if ((data[i].campus == "capetown") && (data[i].ethnicity == "other") && (data[i].gender == "female")) {
+          otherFemaleCPT++;
+        } else if ((data[i].campus == "capetown") && (data[i].ethnicity == "indian") && (data[i].gender == "female")) {
+          indianFemaleCPT++;
+        }
+
+              if ((data[i].gender == "male")&&(data[i].campus == "johannesburg")) {
+        maleJHB++;
+      }
+        if ((data[i].campus == "johannesburg") && (data[i].ethnicity == "black") && (data[i].gender == "male")) {
+          blackMaleJHB++;
+        } else if ((data[i].campus == "johannesburg") && (data[i].ethnicity == "white") && (data[i].gender == "male")) {
+          whiteMaleJHB++;
+        } else if ((data[i].campus == "johannesburg") && (data[i].ethnicity == "coloured") && (data[i].gender == "male")) {
+          colouredMaleJHB++;
+        } else if ((data[i].campus == "johannesburg") && (data[i].ethnicity == "chinese") && (data[i].gender == "male")) {
+          chineseMaleJHB++;
+        }  else if ((data[i].campus == "johannesburg") && (data[i].ethnicity == "other") && (data[i].gender == "male")) {
+          otherMaleJHB++;
+        } else if ((data[i].campus == "johannesburg") && (data[i].ethnicity == "indian") && (data[i].gender == "male")) {
+          indianMaleJHB++;
+        }
+    
+        if ((data[i].gender == "female") && (data[i].campus == "johannesburg")) {
+          femaleJHB++;
+        }
+        
+        if ((data[i].campus == "johannesburg") && (data[i].ethnicity == "black") && (data[i].gender == "female")) {
+          blackFemaleJHB++;
+        } else if ((data[i].campus == "johannesburg") && (data[i].ethnicity == "white") && (data[i].gender == "female")) {
+          whiteFemaleJHB++;
+        } else if ((data[i].campus == "johannesburg") && (data[i].ethnicity == "coloured") && (data[i].gender == "female")) {
+          colouredFemaleJHB++;
+        } else if ((data[i].campus == "johannesburg") && (data[i].ethnicity == "chinese") && (data[i].gender == "female")) {
+          chineseFemaleJHB++;
+        }  else if ((data[i].campus == "johannesburg") && (data[i].ethnicity == "other") && (data[i].gender == "female")) {
+          otherFemaleJHB++;
+        } else if ((data[i].campus == "johannesburg") && (data[i].ethnicity == "indian") && (data[i].gender == "female")) {
+          indianFemaleJHB++;
+        }
+    
+    }
+      // } else {
+      //   female++;
+      //   if (data[i].campus == "capetown") {
+      //     femaleCPT++;
+      //   } else {
+      //     femaleJHB++;
+      //   }
+      // }
+
+      // if (data[i].ethnicity == "black") {
+      //   black++;
+      //   if (data[i].campus == "capetown") {
+      //     blackCPT++;
+      //   } else {
+      //     blackJHB++;
+      //   }
+      // } else if (data[i].ethnicity == "white") {
+      //   white++;
+      //   if (data[i].campus == "capetown") {
+      //     whiteCPT++;
+      //   } else {
+      //     whiteJHB++;
+      //   }
+      // } else if (data[i].ethnicity == "chinese") {
+      //   chinese++;
+      //   if (data[i].campus == "capetown") {
+      //     chineseCPT++;
+      //   } else {
+      //     chineseJHB++;
+      //   }
+      // } else if (data[i].ethnicity == "coloured") {
+      //   coloured++;
+      //   if (data[i].campus == "capetown") {
+      //     colouredCPT++;
+      //   } else {
+      //     colouredJHB++;
+      //   }
+      // } else if (data[i].ethnicity == "other") {
+      //   other++;
+      //   if (data[i].campus == "capetown") {
+      //     otherCPT++;
+      //   } else {
+      //     otherJHB++;
+      //   }
+
+    document.getElementById("data").innerHTML =
+      "<table>"
+      + "<tr class='thead'><td class='head'>Campus</td><td class='head'>Ethnicity</td><td style='background:#eee;'>Female</td><td style='background:#eee;'>Male</td><td style='background:#eee;'>Total</td></tr>" 
+      + "<tr><td>Capetown</td><td>Black</td><td>"+blackFemaleCPT+"</td><td>"+blackMaleCPT+"</td><td>"+ (blackMaleCPT + blackFemaleCPT)+"</td></tr>" 
+      + "<tr class='g'><td>-</td><td>White</td><td>"+whiteFemaleCPT+"</td><td>"+whiteMaleCPT+"</td><td>"+(whiteMaleCPT + whiteFemaleCPT)+"</td></tr>" 
+      + "<tr><td>-</td><td>Coloured</td><td>"+colouredFemaleCPT+"</td><td>"+colouredMaleCPT+"</td><td>"+(colouredMaleCPT + colouredFemaleCPT)+"</td></tr>" 
+      + "<tr class='g'><td>-</td><td>Indian</td><td>"+indianFemaleCPT+"</td><td>"+indianMaleCPT+"</td><td>"+(indianMaleCPT + indianFemaleCPT)+"</td></tr>" 
+      + "<tr><td>-</td><td>Chinese</td><td>"+chineseFemaleCPT+"</td><td>"+chineseMaleCPT+"</td><td>"+(chineseMaleCPT + chineseFemaleCPT)+"</td></tr>" 
+      + "<tr class='g'><td>-</td><td>Other</td><td>"+otherFemaleCPT+"</td><td>"+otherMaleCPT+"</td><td>"+ (otherMaleCPT + otherFemaleCPT)+"</td></tr>" 
+      + "<tr class='thead' ><td>Capetown Total</td><td> </td><td>"+femaleCPT+"</td><td>"+maleCPT+"</td><td>"+ (maleCPT + femaleCPT)+"</td></tr>" 
+
+      + "<tr><td>Johannesburg</td><td>Black</td><td>"+blackFemaleJHB+"</td><td>"+blackMaleJHB+"</td><td>"+ (blackMaleJHB + blackFemaleJHB)+"</td></tr>" 
+      + "<tr class='g'><td>-</td><td>White</td><td>"+whiteFemaleJHB+"</td><td>"+whiteMaleJHB+"</td><td>"+(whiteMaleJHB + whiteFemaleJHB)+"</td></tr>" 
+      + "<tr><td>-</td><td>Coloured</td><td>"+colouredFemaleJHB+"</td><td>"+colouredMaleJHB+"</td><td>"+(colouredMaleJHB + colouredFemaleJHB)+"</td></tr>" 
+      + "<tr class='g'><td>-</td><td>Indian</td><td>"+indianFemaleJHB+"</td><td>"+indianMaleJHB+"</td><td>"+(indianMaleJHB + indianFemaleJHB)+"</td></tr>" 
+      + "<tr><td>-</td><td>Chinese</td><td>"+chineseFemaleJHB+"</td><td>"+chineseMaleJHB+"</td><td>"+(chineseMaleJHB + chineseFemaleJHB)+"</td></tr>" 
+      + "<tr class='g'><td>-</td><td>Other</td><td>"+otherFemaleJHB+"</td><td>"+otherMaleJHB+"</td><td>"+ (otherMaleJHB + otherFemaleJHB)+"</td></tr>" 
+      + "<tr class='thead'><td>Johannesburg Total</td><td> </td><td>"+femaleJHB+"</td><td>"+maleJHB+"</td><td>"+ (maleJHB + femaleJHB)+"</td></tr>" 
+      + "<tr class='thead' style='background-color:#1190F2;color:white;'><td>Total</td><td> </td><td>"+(femaleJHB + femaleCPT)+"</td><td>"+(maleJHB+maleCPT)+"</td><td>"+ (maleJHB + femaleJHB + maleCPT + femaleCPT)+"</td></tr>" 
+      + "</table>";
+  }
+
+  function chart3(data) {
+    var fail = 0;
+    var pass = 0;
+    var amt = 0;
+
+    for (i = 0; i < data.length; i++) {
+      amt++;
+      if (data[i].final_mark < 80) {
+        fail++;
+      } else if (data[i].final_mark >= 80) {
+        pass++;
+      }
+    }
+
+    document.getElementById("data").innerHTML =
+      "<p  class='r'>" + amt + " : Data Set's </p>";
+    var ctx = document.getElementById("myChart").getContext("2d");
+    var myChart = new Chart(ctx, {
+      type: document.getElementById("InChart3").value,
+      data: {
+        labels: ["Pass", "Fail"],
+        datasets: [
+          {
+            label: "Pass/Fail",
+            showLine: true,
+            pointRadius: 10,
+            pointHoverRadius: 15,
+            fill: true,
+            hoverOuterGlowWidth: 20,
+            hoverOuterGlowWidth: "rgb(255, 255, 255)",
+
+            data: [pass, fail],
+            backgroundColor: [
+              "rgba(102, 255, 183, 1)",
+              "rgba(255, 102, 102, 1)"
+            ],
+            borderColor: ["white", "white", "white", "white", "white", "white"],
+            borderWidth: 5
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+        scales: {
+          yAxes: [
+            {
+              ticks: {
+                beginAtZero: true
+              }
+            }
+          ]
+        }
+      }
+    });
+
+    closeModal("passFailInput");
+  }
+
+  function chart(data) {
+    var full = 0;
+    var none = 0;
+    var amazing = 0;
+    var high = 0;
+    var mid = 0;
+    var low = 0;
+    var amt = 0;
+    console.log(data);
+    for (i = 0; i < data.length; i++) {
+      amt++;
+      if (data[i].final_mark == 0) {
+        none++;
+      } else if (data[i].final_mark > 0 && data[i].final_mark < 40) {
+        low++;
+      } else if (data[i].final_mark >= 40 && data[i].final_mark < 80) {
+        mid++;
+      } else if (data[i].final_mark >= 80 && data[i].final_mark < 100) {
+        high++;
+      } else if (data[i].final_mark >= 100 && data[i].final_mark < 125) {
+        amazing++;
+      } else if (data[i].final_mark == 125) {
+        full++;
+      }
+    }
+
+    document.getElementById("data").innerHTML =
+      "<p  class='r'>" + amt + " : Data Set's </p>";
+    var ctx = document.getElementById("myChart").getContext("2d");
+    var myChart = new Chart(ctx, {
+      type: document.getElementById("InChart").value,
+      data: {
+        labels: ["0", "1-40", "40-80", "80-100", "100-125", "125"],
+        datasets: [
+          {
+            label: "Performance",
+            showLine: true,
+            pointRadius: 10,
+            pointHoverRadius: 15,
+            fill: true,
+            hoverOuterGlowWidth: 20,
+            hoverOuterGlowWidth: "rgb(255, 255, 255)",
+
+            data: [none, low, mid, high, amazing, full],
+            backgroundColor: [
+              "rgba(100, 100, 100, 1)",
+              "rgba(255, 102, 102, 1)",
+              "rgba(255, 226, 102, 1)",
+              "rgba(150, 255, 102, 1)",
+              "rgba(102, 255, 183, 1)",
+              "rgba(102, 229, 255, 1)"
+            ],
+            borderColor: ["white", "white", "white", "white", "white", "white"],
+            borderWidth: 5
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+        scales: {
+          yAxes: [
+            {
+              ticks: {
+                beginAtZero: true
+              }
+            }
+          ]
+        }
+      }
+    });
+
+    closeModal("createInput");
+  }
+
+  function GetProjectsChart2() {
+    document.getElementById("mm").innerHTML = '<div id="data"></div><canvas id="myChart" style="width:100%;"></canvas>';
+    var campus = document.getElementById("InCampus1").value;
+    var cohort = document.getElementById("InCohort1").value;
+    var project = document.getElementById("InProject1").value;
+
+    var campus2 = document.getElementById("InCampus2").value;
+    var cohort2 = document.getElementById("InCohort2").value;
+    var project2 = document.getElementById("InProject2").value;
+    // date = new Date (document.getElementById("InDate").value).getDate;
+    var label1 = campus + " " + cohort + " " + project;
+
+    var usernames = fetch(
+      `https://wtc-internal-server-production.herokuapp.com/api/modules?module_name=${project}&campus=${campus}&cohort=${cohort}`,
+      {
+        method: "GET",
+        headers: {
+          "content-type": "application/json"
+        }
+      }
+    )
+      .then(response => response.json())
+      .then(ans => secondCallData(ans, label1, campus2, cohort2, project2));
+  }
+
+  function secondCallData(prevAns, label1, campus, cohort, project) {
+    var label2 = campus + " " + cohort + " " + project;
+    fetch(
+      `https://wtc-internal-server-production.herokuapp.com/api/modules?module_name=${project}&campus=${campus}&cohort=${cohort}`,
+      {
+        method: "GET",
+        headers: {
+          "content-type": "application/json"
+        }
+      }
+    )
+      .then(response => response.json())
+      .then(ans =>
+        chart2(
+          ans.data.getAllModules,
+          prevAns.data.getAllModules,
+          label2,
+          label1
+        )
+      );
+  }
+
+  function chart2(data1, data2, label2, label1) {
+    var full = 0;
+    var none = 0;
+    var amazing = 0;
+    var high = 0;
+    var mid = 0;
+    var low = 0;
+    var amt = 0;
+
+    var fullA = 0;
+    var noneA = 0;
+    var amazingA = 0;
+    var highA = 0;
+    var midA = 0;
+    var lowA = 0;
+    var amtA = 0;
+
+    var full2 = 0;
+    var none2 = 0;
+    var amazing2 = 0;
+    var high2 = 0;
+    var mid2 = 0;
+    var low2 = 0;
+    var amt2 = 0;
+
+    for (i = 0; i < data1.length; i++) {
+      amt++;
+      if (data1[i].final_mark == 0) {
+        none++;
+      } else if (data1[i].final_mark > 0 && data1[i].final_mark < 40) {
+        low++;
+      } else if (data1[i].final_mark >= 40 && data1[i].final_mark < 80) {
+        mid++;
+      } else if (data1[i].final_mark >= 80 && data1[i].final_mark < 100) {
+        high++;
+      } else if (data1[i].final_mark >= 100 && data1[i].final_mark < 125) {
+        amazing++;
+      } else if (data1[i].final_mark == 125) {
+        full++;
+      }
+    }
+    none = ((none / data1.length) * 100).toFixed(2);
+    low = ((low / data1.length) * 100).toFixed(2);
+    mid = ((mid / data1.length) * 100).toFixed(2);
+    high = ((high / data1.length) * 100).toFixed(2);
+    amazing = ((amazing / data1.length) * 100).toFixed(2);
+    full = ((full / data1.length) * 100).toFixed(2);
+
+    for (i = 0; i < data2.length; i++) {
+      amt++;
+      if (data2[i].final_mark == 0) {
+        none2++;
+      } else if (data2[i].final_mark > 0 && data2[i].final_mark < 40) {
+        low2++;
+      } else if (data2[i].final_mark >= 40 && data2[i].final_mark < 80) {
+        mid2++;
+      } else if (data2[i].final_mark >= 80 && data2[i].final_mark < 100) {
+        high2++;
+      } else if (data2[i].final_mark >= 100 && data2[i].final_mark < 125) {
+        amazing2++;
+      } else if (data2[i].final_mark == 125) {
+        full2++;
+      }
+    }
+
+    none2 = ((none2 / data2.length) * 100).toFixed(2);
+    low2 = ((low2 / data2.length) * 100).toFixed(2);
+    mid2 = ((mid2 / data2.length) * 100).toFixed(2);
+    high2 = ((high2 / data2.length) * 100).toFixed(2);
+    amazing2 = ((amazing2 / data2.length) * 100).toFixed(2);
+    full2 = ((full2 / data2.length) * 100).toFixed(2);
+
+    noneA = (parseFloat(none) + parseFloat(none2)) / 2;
+    lowA = (parseFloat(low) + parseFloat(low2)) / 2;
+    midA = (parseFloat(mid) + parseFloat(mid2)) / 2;
+    highA = (parseFloat(high) + parseFloat(high2)) / 2;
+    amazingA = (parseFloat(amazing) + parseFloat(amazing2)) / 2;
+    fullA = (parseFloat(full) + parseFloat(full2)) / 2;
+
+    document.getElementById("data").innerHTML =
+      "<p  class='r'>" + amt + " : User's Data </p>";
+    var ctx = document.getElementById("myChart").getContext("2d");
+
+    var chartData = {
+      labels: ["0", "1-39", "40-79", "80-99", "100-124", "125"],
+      datasets: [
+        {
+          label: label2,
+          fill: true,
+          backgroundColor: "rgba(17, 144, 242, 0.2)",
+          fontSize: 50,
+          borderWidth: 3,
+          borderColor: "rgba(17, 144, 242, 0.8)",
+          data: [none, low, mid, high, amazing, full]
+        },
+        {
+          label: label1,
+          fill: true,
+          backgroundColor: "rgba(252, 83, 83, 0.2)",
+          fontSize: 50,
+          borderWidth: 3,
+          borderColor: "rgba(252, 83, 83, 0.8)",
+          data: [none2, low2, mid2, high2, amazing2, full2]
+        },
+        {
+          label: "Average",
+          fill: false,
+          borderDash: [5, 5],
+          backgroundColor: "rgba(0, 0, 0, 0.2)",
+          fontSize: 50,
+          borderWidth: 2,
+          borderColor: "rgba(0, 0, 0, 0.8)",
+          data: [noneA, lowA, midA, highA, amazingA, fullA]
+        }
+      ]
+    };
+
+    var myChart = new Chart(ctx, {
+      type: document.getElementById("InChart2").value,
+      data: chartData,
+      options: {
+        responsive: true,
+        stacked: false,
+        scales: {
+          yAxes: [
+            {
+              ticks: {
+                beginAtZero: true
+              }
+            }
+          ]
+        }
+      }
+    });
+    closeModal("createInput");
+    fiPrint(data1, "data-display");
+  }
+
+  function fiPrint(data, loc) {
+    for (i = 0; i < data.length; i++) {
+      document.getElementById(loc).innerHTML +=
+        "<p  class='r'>" + data[i].final_mark + " " + data[i].username + "</p>";
+    }
+  }
+
+  function fPrint(data) {
+    for (i = 0; i < data.length; i++) {
+      document.getElementById("data").innerHTML +=
+        "<p  class='r'>" + data[i].username + "</p>";
+    }
+  }
+  // <!--
+  //     function GetProjectsChart2() {
+
+  //     var campus = document.getElementById("InCampus").value;
+  //     var cohort = document.getElementById("InCohort").value;
+  //     var project = document.getElementById("InProject").value;
+
+  //     var campus2 = document.getElementById("InCampus2").value;
+  //     var cohort2 = document.getElementById("InCohort2").value;
+  //     var project2 = document.getElementById("InProject2").value;
+  //     // date = new Date (document.getElementById("InDate").value).getDate;
+  //     var usernames = fetch(`https://wtc-internal-server-production.herokuapp.com/api/modules?module_name=${project}&campus=${campus}&cohort=${cohort}`, {
+  //         method: "GET",
+  //         headers: {
+  //             "content-type": "application/json"
+  //         }
+  //     })
+  //     .then(response => response.json())
+  //     .then(ans => secondCallData(ans, campus2, cohort2, project2))
+  //     }
+
+  //     function finger() {
+  //         var usernames = fetch(`https://serverlivetest.herokuapp.com/api/fingerprints`, {
+  //         method: "GET",
+  //         headers: {
+  //             "content-type": "application/json"
+  //         }
+  //     })
+  //     .then(response => response.json())
+  //     .then(ans => timeIn(ans.data.getAllFingerprints))
+
+  //     } -->
+
+  function timeIn(data) {
+    for (i = 0; i < 10; i++) {
+      document.getElementById("data").innerHTML +=
+        "<p  class='r'>" + data[i].username + "</p>";
+    }
+  }
+</script>

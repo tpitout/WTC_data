@@ -2,135 +2,138 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
 
 <div style="height:100vh;display:flex;">
-    <div class="main-bar">
-        <img width="80%" src="wtc_logo_w.png" /><br /><br />
-        <button id="createStat" onclick="openModal('createInput', 'createStat', 'createClose');" class="button1">Generate Graph</button><br />
-        <button onclick="openModal('passFailInput');" class="button1">Pass/Fail Stats</button><br />
-        <button onclick="GetProjectsChart5();" class="button1">Status</button><br />
-        <button class="button1" onclick="clean();">Clear</button><br />
-    </div>
+    <% include mainBar %>
+        <script src="javascript/display_menu.js"></script>
 
-    <div id="createInput" class="modal">
-        <div class="modal-content">
-            <span onclick="closeModal('createInput');" class="close">cancel</span>
-            <h2 style="color:white;font-sixze:2em;">Enter Data To Generate A Graph</h2>
-            <button id="chooseGraph1" onclick="setModalSingle();">Single Stat</button>
-            <button id="chooseGraph2" onclick="setModalCompare();">Compare Stat</button>
+        <div id="createInput" class="modal">
+            <div class="modal-content">
+                <span onclick="closeModal('createInput');" class="close">cancel</span>
+                <h2 style="color:white;font-sixze:2em;">Enter Data To Generate A Graph</h2>
+                <button id="chooseGraph1" onclick="setModalSingle();">Single Stat</button>
+                <button id="chooseGraph2" onclick="setModalCompare();">Compare Stat</button>
+                <button id="chooseGraph3" onclick="setTime();">Time Stat</button>
 
-            <script>
-                function setModalSingle() {
-                    document.getElementById("inputField_1").style.display = "block";
-                    document.getElementById("inputField_2").style.display = "none";
-                    document.getElementById("chooseGraph1").style.border = "2px solid blue";
-                    document.getElementById("chooseGraph2").style.border = "none";
-                }
+                <div style="display:none;text-align:center;" id="inputField_1">
+                    <label>Cohort</label><br>
+                    <select id="InCohort">
+                    <option value="2017">2017</option>
+                    <option value="2018">2018</option>
+                    <option value="">None</option>
+                  </select>
+                    <br><br>
 
-                function setModalCompare() {
-                    document.getElementById("inputField_2").style.display = "block";
-                    document.getElementById("inputField_1").style.display = "none";
-                    document.getElementById("chooseGraph2").style.border = "2px solid blue";
-                    document.getElementById("chooseGraph1").style.border = "none";
-                }
-            </script>
-            <div style="display:none;text-align:center;" id="inputField_1">
-                <label>Cohort</label><br />
-                <select id="InCohort">
-                  <option value="2017">2017</option>
-                  <option value="2018">2018</option>
-                  <option value="">None</option>
-                </select><br /><br />
+                    <label>Campus</label><br>
+                    <select id="InCampus">
+                    <option value="johannesburg">Johannesburg</option>
+                    <option value="capetown">Cape-Town</option>
+                    <option value="">Both</option>
+                  </select>
+                    <br><br>
 
-                <label>Campus</label><br />
-                <select id="InCampus">
-                  <option value="johannesburg">Johannesburg</option>
-                  <option value="capetown">Cape-Town</option>
-                  <option value="">Both</option>
-                </select><br /><br />
+                    <label>Project</label><br>
+                    <select id="InProject">
+                    <option value="libft">Libft</option>
+                    <option value="matcha">Matcha</option>
+                    <option value="camagru">Camagru</option> 
+                    <option value="">All</option> 
+                  </select>
+                    <br><br>
 
-                <label>Project</label><br />
-                <select id="InProject">
-                  <option value="libft">Libft</option>
-                  <option value="matcha">Matcha</option>
-                  <option value="camagru">Camagru</option> 
-                  <option value="">All</option> 
-                </select><br /><br />
+                    <label>Type of Chart</label><br>
+                    <select id="InChart">
+                    <option value="doughnut">Pie</option>
+                    <option value="line">Line</option>
+                    <option value="bar">Bar</option> 
+                  </select>
+                    <br><br>
+                    <button class="button1" onclick="GetProjectsChart();">Generate</button><br>
+                </div>
 
-                <label>Type of Chart</label><br />
-                <select id="InChart">
-                  <option value="doughnut">Pie</option>
-                  <option value="line">Line</option>
-                  <option value="bar">Bar</option> 
-                </select>
-                <br /><br />
-                <button class="button1" onclick="GetProjectsChart();">Generate</button><br />
-            </div>
-
-            <div style="display:none;text-align:center;" id="inputField_2" style="">
-                <label>Cohort</label><br />
-                <select id="InCohort1">
+                <div style="display:none;text-align:center;" id="inputField_2" style="">
+                    <label>Cohort</label><br />
+                    <select id="InCohort1">
                 <option value="2017">2017</option>
                 <option value="2018">2018</option>
                 <option value="">None</option>
               </select><br /><br />
-                <select id="InCohort2">
+                    <select id="InCohort2">
                 <option value="2017">2017</option>
                 <option value="2018">2018</option>
                 <option value="">None</option>
               </select><br /><br />
 
-                <label>Campus</label><br />
-                <select id="InCampus1">
+                    <label>Campus</label><br />
+                    <select id="InCampus1">
                 <option value="johannesburg">Johannesburg</option>
                 <option value="capetown">Cape-Town</option>
                 <option value="">Both</option>
               </select><br /><br />
-                <select id="InCampus2">
+                    <select id="InCampus2">
                 <option value="johannesburg">Johannesburg</option>
                 <option value="capetown">Cape-Town</option>
                 <option value="">Both</option>
               </select><br /><br />
 
-                <label>Project</label><br />
-                <select id="InProject1">
+                    <label>Project</label><br />
+                    <select id="InProject1">
                 <option value="libft">Libft</option>
                 <option value="matcha">Matcha</option>
                 <option value="camagru">Camagru</option> 
                 <option value="">All</option> 
               </select><br /><br />
-                <select id="InProject2">
+                    <select id="InProject2">
                 <option value="libft">Libft</option>
                 <option value="matcha">Matcha</option>
                 <option value="camagru">Camagru</option> 
                 <option value="">All</option> 
               </select><br /><br />
 
-                <label>Type of Chart</label><br />
-                <select id="InChart">
+                    <label>Type of Chart</label><br />
+                    <select id="InChart">
                 <option value="line">Line</option>
                 <option value="bar">Bar</option> 
               </select>
-                <br /><br />
-                <br />
-                <button class="button1" onclick="GetProjectsChart2();">Generate</button><br />
+                    <br /><br />
+                    <br />
+                    <button class="button1" onclick="GetProjectsChart2();">Generate</button><br />
+                </div>
+
+                <div style="display:none;text-align:center;" id="inputField_3">
+                    <br /><br />
+                    <label>Campus</label><br />
+                    <select id="InCampusT">
+                <option value="johannesburg">Johannesburg</option>
+                <option value="capetown">Cape-Town</option>
+                <option value="">Both</option>
+              </select><br /><br />
+                    <label>Cohort</label><br />
+                    <select id="InCohortT">
+                <option value="2017">2017</option>
+                <option value="2018">2018</option>
+                <option value="2019">2019</option>
+
+                <option value="">None</option>
+              </select><br /><br />
+                    <button class="button1" onclick="finger();">Get Time Statistics</button><br />
+                </div>
             </div>
         </div>
-    </div>
 
-    <div id="passFailInput" class="modal">
-        <div class="modal-content">
-            <span onclick="closeModal('passFailInput');" class="close">cancel</span>
-            <h2 style="color:white;font-sixze:2em;">
-                Enter Data To Generate A Graph
-            </h2>
-            <p style="color:white;">Leave open if you want a wildcard</p>
-            <div style="text-align: center;">
-                <label>Cohort</label><br />
-                <input type="text" id="InCohort3" /><br />
-                <label>Campus</label><br />
-                <input type="text" id="InCampus3" /><br />
-                <label>Project</label><br />
-                <input type="text" id="InProject3" /><br />
-                <select id="InChart3">
+        <div id="passFailInput" class="modal">
+            <div class="modal-content">
+                <span onclick="closeModal('passFailInput');" class="close">cancel</span>
+                <h2 style="color:white;font-sixze:2em;">
+                    Enter Data To Generate A Graph
+                </h2>
+                <p style="color:white;">Leave open if you want a wildcard</p>
+                <div style="text-align: center;">
+                    <label>Cohort</label><br />
+                    <input type="text" id="InCohort3" /><br />
+                    <label>Campus</label><br />
+                    <input type="text" id="InCampus3" /><br />
+                    <label>Project</label><br />
+                    <input type="text" id="InProject3" /><br />
+                    <select id="InChart3">
           <option value="doughnut">Pie</option>
           <option value="bar">Bar</option> </select
         ><br />
@@ -154,75 +157,19 @@
           id="InCohort2"
         /><br />
         <label>Campus</label><br />
-        <input type="text" id="InCampus1" /><input
-          type="text"
-          id="InCampus2"
-        /><br />
+        <input type="text" id="InCampus1" /><input type="text" id="InCampus2" /><br />
         <label>Project</label><br />
-        <input type="text" id="InProject1" /><input
-          type="text"
-          id="InProject2"
-        /><br />
+        <input type="text" id="InProject1" /><input type="text" id="InProject2"/><br />
         <select id="InChart2">
           <option value="line">Line</option>
-          <option value="bar">Bar</option> </select
-        ><br />
-        <button class="button1" onclick="GetProjectsChart2();">Generate</button
+          <option value="bar">Bar</option> </select><br />
+                    <button class="button1" onclick="GetProjectsChart2();">Generate</button
         ><br />
       </div>
     </div>
   </div>
-
-  <script>
-    function openModal(modalID) {
-      var modal = document.getElementById(modalID);
-      modal.style.display = "block";
-    }
-
-    function closeModal(modalID) {
-      var modal = document.getElementById(modalID);
-      modal.style.display = "none";
-    }
-  </script>
   <div id="mm" class="main-main">
     <div id="data"></div>
-    <script type="text/javascript">
-      ryansFuntion();
-
-      async function ryansFuntion() {
-        const result = await getData();
-        let data = result.data.getAllModules;
-        pivot(data);
-      }
-
-      function getData() {
-        return new Promise((resolve, reject) => {
-          var campus = document.getElementById("InCampus").value;
-          var cohort = document.getElementById("InCohort").value;
-          var project = document.getElementById("InProject").value;
-          fetch(
-            `https://wtc-internal-server-production.herokuapp.com/api/modules?cohort=${cohort}&campus=${campus}&project=${project}`,
-            {
-              method: "GET",
-              headers: {
-                "content-type": "application/json"
-              }
-            }
-          )
-            .then(response => {
-              return response.json();
-            })
-            .then(res => {
-              if (res.data.getAllModules.length === 0) {
-                reject(Error("error"));
-              } else {
-                resolve(res);
-              }
-            });
-        });
-      }
-
-    </script>
     <canvas id="myChart" style="width:100%;"></canvas>
   </div>
 </div>
@@ -236,7 +183,7 @@
     var cohort = document.getElementById("InCohort").value;
     var campus = document.getElementById("InCampus").value;
 
-    var usernames = fetch(
+    fetch (
       `https://serverlivetest.herokuapp.com/api/users?cohort=${cohort}&campus=${campus}`,
       {
         method: "GET",
@@ -255,7 +202,7 @@
     var cohort = document.getElementById("InCohort").value;
     var project = document.getElementById("InProject").value;
     // date = new Date (document.getElementById("InDate").value).getDate;
-    var usernames = fetch(
+    fetch(
       `https://wtc-internal-server-production.herokuapp.com/api/modules?module_name=${project}&campus=${campus}&cohort=${cohort}`,
       {
         method: "GET",
@@ -273,7 +220,7 @@
     var cohort = document.getElementById("InCohort3").value;
     var project = document.getElementById("InProject3").value;
     // date = new Date (document.getElementById("InDate").value).getDate;
-    var usernames = fetch(
+    fetch(
       `https://wtc-internal-server-production.herokuapp.com/api/modules?module_name=${project}&campus=${campus}&cohort=${cohort}`,
       {
         method: "GET",
@@ -410,70 +357,27 @@
         }
     
     }
-      // } else {
-      //   female++;
-      //   if (data[i].campus == "capetown") {
-      //     femaleCPT++;
-      //   } else {
-      //     femaleJHB++;
-      //   }
-      // }
 
-      // if (data[i].ethnicity == "black") {
-      //   black++;
-      //   if (data[i].campus == "capetown") {
-      //     blackCPT++;
-      //   } else {
-      //     blackJHB++;
-      //   }
-      // } else if (data[i].ethnicity == "white") {
-      //   white++;
-      //   if (data[i].campus == "capetown") {
-      //     whiteCPT++;
-      //   } else {
-      //     whiteJHB++;
-      //   }
-      // } else if (data[i].ethnicity == "chinese") {
-      //   chinese++;
-      //   if (data[i].campus == "capetown") {
-      //     chineseCPT++;
-      //   } else {
-      //     chineseJHB++;
-      //   }
-      // } else if (data[i].ethnicity == "coloured") {
-      //   coloured++;
-      //   if (data[i].campus == "capetown") {
-      //     colouredCPT++;
-      //   } else {
-      //     colouredJHB++;
-      //   }
-      // } else if (data[i].ethnicity == "other") {
-      //   other++;
-      //   if (data[i].campus == "capetown") {
-      //     otherCPT++;
-      //   } else {
-      //     otherJHB++;
-      //   }
 
     document.getElementById("data").innerHTML =
       "<table>"
       + "<tr class='thead'><td class='head'>Campus</td><td class='head'>Ethnicity</td><td style='background:#eee;'>Female</td><td style='background:#eee;'>Male</td><td style='background:#eee;'>Total</td></tr>" 
       + "<tr><td>Capetown</td><td>Black</td><td>"+blackFemaleCPT+"</td><td>"+blackMaleCPT+"</td><td>"+ (blackMaleCPT + blackFemaleCPT)+"</td></tr>" 
-      + "<tr class='g'><td>-</td><td>White</td><td>"+whiteFemaleCPT+"</td><td>"+whiteMaleCPT+"</td><td>"+(whiteMaleCPT + whiteFemaleCPT)+"</td></tr>" 
+      + "<tr><td>-</td><td>White</td><td>"+whiteFemaleCPT+"</td><td>"+whiteMaleCPT+"</td><td>"+(whiteMaleCPT + whiteFemaleCPT)+"</td></tr>" 
       + "<tr><td>-</td><td>Coloured</td><td>"+colouredFemaleCPT+"</td><td>"+colouredMaleCPT+"</td><td>"+(colouredMaleCPT + colouredFemaleCPT)+"</td></tr>" 
-      + "<tr class='g'><td>-</td><td>Indian</td><td>"+indianFemaleCPT+"</td><td>"+indianMaleCPT+"</td><td>"+(indianMaleCPT + indianFemaleCPT)+"</td></tr>" 
+      + "<tr><td>-</td><td>Indian</td><td>"+indianFemaleCPT+"</td><td>"+indianMaleCPT+"</td><td>"+(indianMaleCPT + indianFemaleCPT)+"</td></tr>" 
       + "<tr><td>-</td><td>Chinese</td><td>"+chineseFemaleCPT+"</td><td>"+chineseMaleCPT+"</td><td>"+(chineseMaleCPT + chineseFemaleCPT)+"</td></tr>" 
-      + "<tr class='g'><td>-</td><td>Other</td><td>"+otherFemaleCPT+"</td><td>"+otherMaleCPT+"</td><td>"+ (otherMaleCPT + otherFemaleCPT)+"</td></tr>" 
-      + "<tr class='thead' ><td>Capetown Total</td><td> </td><td>"+femaleCPT+"</td><td>"+maleCPT+"</td><td>"+ (maleCPT + femaleCPT)+"</td></tr>" 
+      + "<tr><td>-</td><td>Other</td><td>"+otherFemaleCPT+"</td><td>"+otherMaleCPT+"</td><td>"+ (otherMaleCPT + otherFemaleCPT)+"</td></tr>" 
+      + "<tr class='head' style='border-left:none;'><td>Capetown Total</td><td>-</td><td>"+femaleCPT+"</td><td>"+maleCPT+"</td><td>"+ (maleCPT + femaleCPT)+"</td></tr>" 
 
       + "<tr><td>Johannesburg</td><td>Black</td><td>"+blackFemaleJHB+"</td><td>"+blackMaleJHB+"</td><td>"+ (blackMaleJHB + blackFemaleJHB)+"</td></tr>" 
-      + "<tr class='g'><td>-</td><td>White</td><td>"+whiteFemaleJHB+"</td><td>"+whiteMaleJHB+"</td><td>"+(whiteMaleJHB + whiteFemaleJHB)+"</td></tr>" 
+      + "<tr><td>-</td><td>White</td><td>"+whiteFemaleJHB+"</td><td>"+whiteMaleJHB+"</td><td>"+(whiteMaleJHB + whiteFemaleJHB)+"</td></tr>" 
       + "<tr><td>-</td><td>Coloured</td><td>"+colouredFemaleJHB+"</td><td>"+colouredMaleJHB+"</td><td>"+(colouredMaleJHB + colouredFemaleJHB)+"</td></tr>" 
-      + "<tr class='g'><td>-</td><td>Indian</td><td>"+indianFemaleJHB+"</td><td>"+indianMaleJHB+"</td><td>"+(indianMaleJHB + indianFemaleJHB)+"</td></tr>" 
+      + "<tr><td>-</td><td>Indian</td><td>"+indianFemaleJHB+"</td><td>"+indianMaleJHB+"</td><td>"+(indianMaleJHB + indianFemaleJHB)+"</td></tr>" 
       + "<tr><td>-</td><td>Chinese</td><td>"+chineseFemaleJHB+"</td><td>"+chineseMaleJHB+"</td><td>"+(chineseMaleJHB + chineseFemaleJHB)+"</td></tr>" 
-      + "<tr class='g'><td>-</td><td>Other</td><td>"+otherFemaleJHB+"</td><td>"+otherMaleJHB+"</td><td>"+ (otherMaleJHB + otherFemaleJHB)+"</td></tr>" 
-      + "<tr class='thead'><td>Johannesburg Total</td><td> </td><td>"+femaleJHB+"</td><td>"+maleJHB+"</td><td>"+ (maleJHB + femaleJHB)+"</td></tr>" 
-      + "<tr class='thead' style='background-color:#1190F2;color:white;'><td>Total</td><td> </td><td>"+(femaleJHB + femaleCPT)+"</td><td>"+(maleJHB+maleCPT)+"</td><td>"+ (maleJHB + femaleJHB + maleCPT + femaleCPT)+"</td></tr>" 
+      + "<tr><td>-</td><td>Other</td><td>"+otherFemaleJHB+"</td><td>"+otherMaleJHB+"</td><td>"+ (otherMaleJHB + otherFemaleJHB)+"</td></tr>" 
+      + "<tr class='head'><td>Johannesburg Total</td><td>-</td><td>"+femaleJHB+"</td><td>"+maleJHB+"</td><td>"+ (maleJHB + femaleJHB)+"</td></tr>" 
+      + "<tr class='thead'><td>Total</td><td>-</td><td>"+(femaleJHB + femaleCPT)+"</td><td>"+(maleJHB+maleCPT)+"</td><td>"+ (maleJHB + femaleJHB + maleCPT + femaleCPT)+"</td></tr>" 
       + "</table>";
   }
 
@@ -807,43 +711,238 @@
         "<p  class='r'>" + data[i].username + "</p>";
     }
   }
-  // <!--
-  //     function GetProjectsChart2() {
 
-  //     var campus = document.getElementById("InCampus").value;
-  //     var cohort = document.getElementById("InCohort").value;
-  //     var project = document.getElementById("InProject").value;
+      function finger() {
+        var cohort = document.getElementById("InCohortT").value;
+        var campus = document.getElementById("InCampusT").value;
+          var usernames = fetch(`https://serverlivetest.herokuapp.com/api/fingerprints?cohort=${cohort}&campus=${campus}`, {
+          method: "GET",
+          headers: {
+              "content-type": "application/json"
+          }
+      })
+      .then(response => response.json())
+      .then(ans => timeIn(ans.data.getAllFingerprints))
 
-  //     var campus2 = document.getElementById("InCampus2").value;
-  //     var cohort2 = document.getElementById("InCohort2").value;
-  //     var project2 = document.getElementById("InProject2").value;
-  //     // date = new Date (document.getElementById("InDate").value).getDate;
-  //     var usernames = fetch(`https://wtc-internal-server-production.herokuapp.com/api/modules?module_name=${project}&campus=${campus}&cohort=${cohort}`, {
-  //         method: "GET",
-  //         headers: {
-  //             "content-type": "application/json"
-  //         }
-  //     })
-  //     .then(response => response.json())
-  //     .then(ans => secondCallData(ans, campus2, cohort2, project2))
-  //     }
-
-  //     function finger() {
-  //         var usernames = fetch(`https://serverlivetest.herokuapp.com/api/fingerprints`, {
-  //         method: "GET",
-  //         headers: {
-  //             "content-type": "application/json"
-  //         }
-  //     })
-  //     .then(response => response.json())
-  //     .then(ans => timeIn(ans.data.getAllFingerprints))
-
-  //     } -->
+      }
 
   function timeIn(data) {
-    for (i = 0; i < 10; i++) {
-      document.getElementById("data").innerHTML +=
-        "<p  class='r'>" + data[i].username + "</p>";
+      var totalTimeH = 0;
+      var totalTimeM = 0;
+     
+    for (i = 0; i < data.length; i++) {
+        var d1 = new Date(data[i].time_in);
+        var d2 = new Date(data[i].time_out);
+        var time = (d2 - d1)/1000;
+        var ntime = new Date(null);
+        ntime.setSeconds(time);
+        ntime = ntime.toISOString().substr(11, 8);
+
+        totalTimeH += (parseInt(ntime.substr(0,2)));
+        totalTimeM += (parseInt(ntime.substr(3,2)));   
     }
+    
+    totalTimeH = parseInt(totalTimeH/data.length);
+    totalTimeM = parseInt(totalTimeM/data.length);
+
+    closeModal('createInput');
+  
+      // document.getElementById("data").innerHTML +=
+        // "<br><br><div style='font-size:2em;text-align:center;'><p>" + "Average Time spent on Campus Daily:<br>"+parseInt(totalTimeH/data.length)+":"+parseInt(totalTimeM/data.length)+ "</p></div>";
+    document.getElementById("mm").innerHTML = '<div style="font-size:2em;text-align:center;" id="data"><p>Average Time Spent on Campus a Day: </p><p style="font-weight:bolder;">'+totalTimeH+":"+totalTimeM+'</p><p></div><div style="width:100%;"><canvas id="myChart" style="width:50%;"></canvas></div>';
+    chartTime(data, totalTimeH);
+        // closeModal('createInput');
+  }
+
+  function chartTime(data, avg) {
+    var timeIn = 0;
+    var timeOut = 0;
+    var fiveIn = 0;
+    var sixIn = 0;
+    var sevenIn = 0;
+    var eightIn = 0;
+    var nineIn = 0;
+    var tenIn = 0;
+    var elevenIn = 0;
+    var twelveIn = 0;
+    var thirteenIn = 0;
+    var fourteenIn = 0;
+    var fithteenIn = 0;
+    var sixteenIn = 0;
+    var seventeenIn = 0;
+    var eighteenIn = 0;
+    var nineteenIn = 0;
+    var twentyIn = 0;
+    var fiveOut = 0;
+    var sixOut = 0;
+    var sevenOut = 0;
+    var eightOut = 0;
+    var nineOut = 0;
+    var tenOut = 0;
+    var elevenOut = 0;
+    var twelveOut = 0;
+    var thirteenOut = 0;
+    var fourteenOut = 0;
+    var fithteenOut = 0;
+    var sixteenOut = 0;
+    var seventeenOut = 0;
+    var eighteenOut = 0;
+    var nineteenOut = 0;
+    var twentyOut = 0;
+
+    for (i = 0; i < data.length; i++) {
+        if (parseInt(data[i].time_in.substr(11,2)) == 5) {
+          fiveIn++;
+        } else if (parseInt(data[i].time_in.substr(11,2)) == 6) {
+          sixIn++;
+        } else if (parseInt(data[i].time_in.substr(11,2)) == 7) {
+          sevenIn++;
+        } else if (parseInt(data[i].time_in.substr(11,2)) == 8) {
+          eightIn++;
+        } else if (parseInt(data[i].time_in.substr(11,2)) == 9) {
+          nineIn++;
+        } else if (parseInt(data[i].time_in.substr(11,2)) == 10) {
+          tenIn++;
+        } else if (parseInt(data[i].time_in.substr(11,2)) == 11) {
+          elevenIn++;
+        } else if (parseInt(data[i].time_in.substr(11,2)) == 12) {
+          twelveIn++;
+        } else if (parseInt(data[i].time_in.substr(11,2)) == 13) {
+          thirteenIn++;
+        }else if (parseInt(data[i].time_in.substr(11,2)) == 14) {
+          fourteenIn++;
+        } else if (parseInt(data[i].time_in.substr(11,2)) == 15) {
+          fithteenIn++;
+        } else if (parseInt(data[i].time_in.substr(11,2)) == 16) {
+          sixteenIn++;
+        } else if (parseInt(data[i].time_in.substr(11,2)) == 17) {
+          seventeenIn++;
+        }  else if (parseInt(data[i].time_in.substr(11,2)) == 18) {
+          eighteenIn++;
+        } else if (parseInt(data[i].time_in.substr(11,2)) == 19) {
+          nineteenIn++;
+        } else if (parseInt(data[i].time_in.substr(11,2)) == 20) {
+          twentyIn++;
+        }
+    }
+
+   for (i = 0; i < data.length; i++) {
+        if (parseInt(data[i].time_out.substr(11,2)) == 5) {
+          fiveOut++;
+        } else if (parseInt(data[i].time_out.substr(11,2)) == 6) {
+          sixOut++;
+        } else if (parseInt(data[i].time_out.substr(11,2)) == 7) {
+          sevenOut++;
+        } else if (parseInt(data[i].time_out.substr(11,2)) == 8) {
+          eightOut++;
+        } else if (parseInt(data[i].time_out.substr(11,2)) == 9) {
+          nineOut++;
+        } else if (parseInt(data[i].time_out.substr(11,2)) == 10) {
+          tenOut++;
+        } else if (parseInt(data[i].time_out.substr(11,2)) == 11) {
+          elevenOut++;
+        } else if (parseInt(data[i].time_out.substr(11,2)) == 12) {
+          twelveOut++;
+        } else if (parseInt(data[i].time_out.substr(11,2)) == 13) {
+          thirteenOut++;
+        }else if (parseInt(data[i].time_out.substr(11,2)) == 14) {
+          fourteenOut++;
+        } else if (parseInt(data[i].time_out.substr(11,2)) == 15) {
+          fithteenOut++;
+        } else if (parseInt(data[i].time_out.substr(11,2)) == 16) {
+          sixteenOut++;
+        } else if (parseInt(data[i].time_out.substr(11,2)) == 17) {
+          seventeenOut++;
+        }  else if (parseInt(data[i].time_out.substr(11,2)) == 18) {
+          eighteenOut++;
+        } else if (parseInt(data[i].time_out.substr(11,2)) == 19) {
+          nineteenOut++;
+        } else if (parseInt(data[i].time_out.substr(11,2)) == 20) {
+          twentyOut++;
+        }
+    }
+
+    var ctx = document.getElementById("myChart").getContext("2d");
+    var myChart = new Chart(ctx, {
+      type: "line",
+      data: {
+        labels: ["5:00","6:00", "7:00", "8:00", "9:00","10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00", "18:00", "19:00", "20:00"],
+        datasets: [
+          {
+            label: "Time In",
+            showLine: true,
+            pointRadius: 10,
+            pointHoverRadius: 15,
+            fill: false,
+            hoverOuterGlowWidth: 20,
+            hoverOuterGlowWidth: "rgb(255, 255, 255)",
+
+            data: [fiveIn, sixIn, sevenIn, eightIn, nineIn, tenIn, elevenIn, twelveIn, thirteenIn, fourteenIn, fithteenIn, sixteenIn, seventeenIn,eighteenIn,nineteenIn,twentyIn],
+            backgroundColor: [
+            "rgba(102, 229, 255, 1)",
+            "rgba(102, 229, 255, 1)",
+            "rgba(102, 229, 255, 1)",
+            "rgba(102, 229, 255, 1)",
+            "rgba(102, 229, 255, 1)",
+            "rgba(102, 229, 255, 1)",
+            "rgba(102, 229, 255, 1)",
+            "rgba(102, 229, 255, 1)",
+            "rgba(102, 229, 255, 1)",
+            "rgba(102, 229, 255, 1)",
+            "rgba(102, 229, 255, 1)",
+            "rgba(102, 229, 255, 1)",
+            "rgba(102, 229, 255, 1)",
+            "rgba(102, 229, 255, 1)",
+            "rgba(102, 229, 255, 1)",
+            "rgba(102, 229, 255, 1)",
+            ],
+            borderColor: ["white", "white", "white", "white", "white", "white"],
+            borderWidth: 5
+          }, {
+            label: "Time Out",
+            showLine: true,
+            pointRadius: 10,
+            pointHoverRadius: 15,
+            fill: false,
+            hoverOuterGlowWidth: 20,
+            hoverOuterGlowWidth: "rgb(255, 255, 255)",
+
+            data: [fiveOut, sixOut, sevenOut,eightOut,nineOut,tenOut,elevenOut,twelveOut,thirteenOut,fourteenOut,fithteenOut,sixteenOut,seventeenOut,eighteenOut,nineteenOut,twentyOut],
+            backgroundColor: [
+            "rgba(150, 255, 102, 1)",
+            "rgba(150, 255, 102, 1)",
+            "rgba(150, 255, 102, 1)",
+            "rgba(150, 255, 102, 1)",
+            "rgba(150, 255, 102, 1)",
+            "rgba(150, 255, 102, 1)",
+            "rgba(150, 255, 102, 1)",
+            "rgba(150, 255, 102, 1)",
+            "rgba(150, 255, 102, 1)",
+            "rgba(150, 255, 102, 1)",
+            "rgba(150, 255, 102, 1)",
+            "rgba(150, 255, 102, 1)",
+            "rgba(150, 255, 102, 1)",
+            "rgba(150, 255, 102, 1)",
+            "rgba(150, 255, 102, 1)",
+            "rgba(150, 255, 102, 1)",
+            ],
+            borderColor: ["white", "white", "white", "white", "white", "white"],
+            borderWidth: 5
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+        scales: {
+          yAxes: [
+            {
+              ticks: {
+                beginAtZero: true
+              }
+            }
+          ]
+        }
+      }
+    });
   }
 </script>
